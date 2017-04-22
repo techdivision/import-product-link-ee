@@ -8,6 +8,8 @@
         <service id="import_product_link_ee.observer.link" class="TechDivision\Import\Product\Link\Ee\Observers\EeLinkObserver"/>
         <service id="import_product_link_ee.observer.link.update" class="TechDivision\Import\Product\Link\Ee\Observers\EeLinkUpdateObserver"/>
 
+        <service id="configuration.import_product_link_ee.subject.link" synthetic="true" />
+
         <service id="import_product_link_ee.subject.link" class="TechDivision\Import\Product\Link\Ee\Subjects\EeLinkSubject" shared="false">
             <argument type="service" id="configuration.import_product_link_ee.subject.link"/>
             <argument type="service" id="import.processor.registry"/>
