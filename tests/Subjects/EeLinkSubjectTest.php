@@ -22,6 +22,7 @@ namespace TechDivision\Import\Product\Link\Ee\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Utils\ConfigurationKeys;
+use TechDivision\Import\Utils\EntityTypeCodes;
 
 /**
  * Test class for the link subject implementation for th Magento 2 EE.
@@ -51,7 +52,49 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->subject = new EeLinkSubject();
+
+
+        // create a mock configuration instance
+        $mockConfiguration =  $this->getMockBuilder('TechDivision\Import\ConfigurationInterface')
+                                   ->setMethods(get_class_methods('TechDivision\Import\ConfigurationInterface'))
+                                   ->getMock();
+        $mockConfiguration->expects($this->once())
+                          ->method('getEntityTypeCode')
+                          ->willReturn(EntityTypeCodes::CATALOG_PRODUCT);
+
+        // create a mock subject configuration
+        $mockSubjectConfiguration = $this->getMockBuilder('TechDivision\Import\Configuration\SubjectConfigurationInterface')
+                                         ->setMethods(get_class_methods('TechDivision\Import\Configuration\SubjectConfigurationInterface'))
+                                         ->getMock();
+        $mockSubjectConfiguration->expects($this->any())
+                                 ->method('getConfiguration')
+                                 ->willReturn($mockConfiguration);
+        $mockSubjectConfiguration->expects($this->any())
+                                 ->method('getCallbacks')
+                                 ->willReturn(array());
+        // create a mock registry processor
+        $mockRegistryProcessor = $this->getMockBuilder('TechDivision\Import\Services\RegistryProcessorInterface')
+                                      ->setMethods(get_class_methods('TechDivision\Import\Services\RegistryProcessorInterface'))
+                                      ->getMock();
+
+        // create a mock product processor
+        $mockProductProcessor = $this->getMockBuilder('TechDivision\Import\Product\Services\ProductBunchProcessorInterface')
+                                     ->setMethods(get_class_methods('TechDivision\Import\Product\Services\ProductBunchProcessorInterface'))
+                                     ->getMock();
+
+        // create a generator
+        $mockGenerator = $this->getMockBuilder('TechDivision\Import\Utils\Generators\GeneratorInterface')
+                              ->setMethods(get_class_methods('TechDivision\Import\Utils\Generators\GeneratorInterface'))
+                              ->getMock();
+
+        // create the subject to be tested
+        $this->subject = new EeLinkSubject(
+            $mockSubjectConfiguration,
+            $mockRegistryProcessor,
+            $mockGenerator,
+            array(),
+            $mockProductProcessor
+        );
     }
 
     /**
@@ -79,30 +122,21 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
                 RegistryKeys::ROOT_CATEGORIES => array(),
                 RegistryKeys::DEFAULT_STORE => array(),
                 RegistryKeys::CORE_CONFIG_DATA => array(),
+                RegistryKeys::EAV_USER_DEFINED_ATTRIBUTES => array(
+                    EntityTypeCodes::CATALOG_PRODUCT => array()
+                )
             )
         );
 
         // load a mock processor
-        $mockProcessor = $this->getMockBuilder($processorInterface = 'TechDivision\Import\Services\RegistryProcessorInterface')
-                              ->setMethods(get_class_methods($processorInterface))
-                              ->getMock();
+        $mockProcessor = $this->subject->getRegistryProcessor();
         $mockProcessor->expects($this->any())
                       ->method('getAttribute')
+                      ->with($serial = uniqid())
                       ->willReturn($status);
 
-        // load the mock configuration
-        $mockConfiguration = $this->getMockBuilder($subjectInterface = 'TechDivision\Import\Configuration\SubjectInterface')
-                                  ->setMethods(get_class_methods($subjectInterface))
-                                  ->getMock();
-        $mockConfiguration->expects($this->once())
-                          ->method('getParam')
-                          ->with(ConfigurationKeys::ROOT_DIRECTORY)
-                          ->willReturn(__DIR__);
-
-        // inject and set-up the processor
-        $this->subject->setRegistryProcessor($mockProcessor);
-        $this->subject->setConfiguration($mockConfiguration);
-        $this->subject->setUp();
+        // set-up the processor
+        $this->subject->setUp($serial);
 
         // test the mapSkuToRowId() method
         $this->assertSame($rowId, $this->subject->mapSkuToRowId($sku));

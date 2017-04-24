@@ -46,23 +46,25 @@ class EeLinkSubject extends LinkSubject
     /**
      * Intializes the previously loaded global data for exactly one variants.
      *
+     * @param string $serial The serial of the actual import
+     *
      * @return void
      * @see \Importer\Csv\Actions\ProductImportAction::prepare()
      */
-    public function setUp()
+    public function setUp($serial)
     {
 
         // load the entity manager and the registry processor
         $registryProcessor = $this->getRegistryProcessor();
 
         // load the status of the actual import process
-        $status = $registryProcessor->getAttribute($this->serial);
+        $status = $registryProcessor->getAttribute($serial);
 
         // load the attribute set we've prepared intially
         $this->skuRowIdMapping = $status[RegistryKeys::SKU_ROW_ID_MAPPING];
 
         // prepare the callbacks
-        parent::setUp();
+        parent::setUp($serial);
     }
 
     /**
