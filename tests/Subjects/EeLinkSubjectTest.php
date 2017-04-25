@@ -21,7 +21,6 @@
 namespace TechDivision\Import\Product\Link\Ee\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
-use TechDivision\Import\Utils\ConfigurationKeys;
 use TechDivision\Import\Utils\EntityTypeCodes;
 
 /**
