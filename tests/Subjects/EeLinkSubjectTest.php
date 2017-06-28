@@ -52,25 +52,6 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
 
-
-        // create a mock configuration instance
-        $mockConfiguration =  $this->getMockBuilder('TechDivision\Import\ConfigurationInterface')
-                                   ->setMethods(get_class_methods('TechDivision\Import\ConfigurationInterface'))
-                                   ->getMock();
-        $mockConfiguration->expects($this->once())
-                          ->method('getEntityTypeCode')
-                          ->willReturn(EntityTypeCodes::CATALOG_PRODUCT);
-
-        // create a mock subject configuration
-        $mockSubjectConfiguration = $this->getMockBuilder('TechDivision\Import\Configuration\SubjectConfigurationInterface')
-                                         ->setMethods(get_class_methods('TechDivision\Import\Configuration\SubjectConfigurationInterface'))
-                                         ->getMock();
-        $mockSubjectConfiguration->expects($this->any())
-                                 ->method('getConfiguration')
-                                 ->willReturn($mockConfiguration);
-        $mockSubjectConfiguration->expects($this->any())
-                                 ->method('getCallbacks')
-                                 ->willReturn(array());
         // create a mock registry processor
         $mockRegistryProcessor = $this->getMockBuilder('TechDivision\Import\Services\RegistryProcessorInterface')
                                       ->setMethods(get_class_methods('TechDivision\Import\Services\RegistryProcessorInterface'))
@@ -88,7 +69,6 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
 
         // create the subject to be tested
         $this->subject = new EeLinkSubject(
-            $mockSubjectConfiguration,
             $mockRegistryProcessor,
             $mockGenerator,
             array(),
@@ -133,6 +113,28 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
                       ->method('getAttribute')
                       ->with($serial = uniqid())
                       ->willReturn($status);
+
+        // create a mock configuration instance
+        $mockConfiguration =  $this->getMockBuilder('TechDivision\Import\ConfigurationInterface')
+                                   ->setMethods(get_class_methods('TechDivision\Import\ConfigurationInterface'))
+                                   ->getMock();
+        $mockConfiguration->expects($this->once())
+                          ->method('getEntityTypeCode')
+                          ->willReturn(EntityTypeCodes::CATALOG_PRODUCT);
+
+        // create a mock subject configuration
+        $mockSubjectConfiguration = $this->getMockBuilder('TechDivision\Import\Configuration\SubjectConfigurationInterface')
+                                         ->setMethods(get_class_methods('TechDivision\Import\Configuration\SubjectConfigurationInterface'))
+                                         ->getMock();
+        $mockSubjectConfiguration->expects($this->any())
+                                 ->method('getConfiguration')
+                                 ->willReturn($mockConfiguration);
+        $mockSubjectConfiguration->expects($this->any())
+                                 ->method('getCallbacks')
+                                 ->willReturn(array());
+
+        // set the configuration
+        $this->subject->setConfiguration($mockSubjectConfiguration);
 
         // set-up the processor
         $this->subject->setUp($serial);
