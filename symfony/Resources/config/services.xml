@@ -5,14 +5,17 @@
 
     <services>
 
-        <service id="import_product_link_ee.observer.link" class="TechDivision\Import\Product\Link\Ee\Observers\EeLinkObserver"/>
-        <service id="import_product_link_ee.observer.link.update" class="TechDivision\Import\Product\Link\Ee\Observers\EeLinkUpdateObserver"/>
+        <service id="import_product_link_ee.observer.link" class="TechDivision\Import\Product\Link\Ee\Observers\EeLinkObserver">
+            <argument type="service" id="import_product_link.processor.product.link"/>
+        </service>
+        <service id="import_product_link_ee.observer.link.update" class="TechDivision\Import\Product\Link\Ee\Observers\EeLinkUpdateObserver">
+            <argument type="service" id="import_product_link.processor.product.link"/>
+        </service>
 
         <service id="import_product_link_ee.subject.link" class="TechDivision\Import\Product\Link\Ee\Subjects\EeLinkSubject" shared="false">
             <argument type="service" id="import.processor.registry"/>
             <argument type="service" id="import.generator.core.config.data.uid"/>
             <argument type="service" id="loggers"/>
-            <argument type="service" id="import_product_link.processor.product.link"/>
         </service>
 
     </services>
