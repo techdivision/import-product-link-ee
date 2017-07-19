@@ -22,6 +22,7 @@ namespace TechDivision\Import\Product\Link\Ee\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Utils\EntityTypeCodes;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Test class for the link subject implementation for th Magento 2 EE.
@@ -71,7 +72,7 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
         $this->subject = new EeLinkSubject(
             $mockRegistryProcessor,
             $mockGenerator,
-            array(),
+            new ArrayCollection(),
             $mockProductProcessor
         );
     }
