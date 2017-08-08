@@ -39,7 +39,7 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
     /**
      * The subject we want to test.
      *
-     * @var \TechDivision\Import\Product\Ling\Ee\Subjects\EeLinkSubject
+     * @var \TechDivision\Import\Product\Link\Ee\Subjects\EeLinkSubject
      */
     protected $subject;
 
@@ -132,6 +132,12 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
                                  ->willReturn($mockConfiguration);
         $mockSubjectConfiguration->expects($this->any())
                                  ->method('getCallbacks')
+                                 ->willReturn(array());
+        $mockSubjectConfiguration->expects($this->any())
+                                 ->method('getHeaderMappings')
+                                 ->willReturn(array());
+        $mockSubjectConfiguration->expects($this->any())
+                                 ->method('getImageTypes')
                                  ->willReturn(array());
 
         // set the configuration
