@@ -140,6 +140,9 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
         $mockSubjectConfiguration->expects($this->any())
                                  ->method('getImageTypes')
                                  ->willReturn(array());
+        $mockSubjectConfiguration->expects($this->any())
+                                 ->method('getFrontendInputCallbacks')
+                                 ->willReturn(array());
 
         // set the configuration
         $this->subject->setConfiguration($mockSubjectConfiguration);
