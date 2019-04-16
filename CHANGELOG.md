@@ -1,3 +1,13 @@
+# Version 9.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to techdivision/import-product-ee 8.0.* and techdivision/import-product-link 9.0.*
+
 # Version 8.0.0
 
 ## Bugfixes
