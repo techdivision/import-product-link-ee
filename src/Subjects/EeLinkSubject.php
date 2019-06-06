@@ -57,7 +57,7 @@ class EeLinkSubject extends LinkSubject
         $registryProcessor = $this->getRegistryProcessor();
 
         // load the status of the actual import process
-        $status = $registryProcessor->getAttribute($serial);
+        $status = $registryProcessor->getAttribute(RegistryKeys::STATUS);
 
         // load the attribute set we've prepared intially
         $this->skuRowIdMapping = $status[RegistryKeys::SKU_ROW_ID_MAPPING];
