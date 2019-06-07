@@ -1,3 +1,13 @@
+# Version 12.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to techdivision/import-product-ee 11.0.* and techdivision/import-product-link 12.0.*
+
 # Version 11.0.0
 
 ## Bugfixes
