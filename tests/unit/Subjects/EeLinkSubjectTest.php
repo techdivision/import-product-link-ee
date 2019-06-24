@@ -20,6 +20,7 @@
 
 namespace TechDivision\Import\Product\Link\Ee\Subjects;
 
+use TechDivision\Import\Utils\CacheKeys;
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Utils\EntityTypeCodes;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -119,7 +120,7 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
         $mockProcessor = $this->subject->getRegistryProcessor();
         $mockProcessor->expects($this->any())
                       ->method('getAttribute')
-                      ->with($serial = uniqid())
+                      ->with(CacheKeys::STATUS)
                       ->willReturn($status);
 
         // create a mock configuration instance
@@ -154,7 +155,7 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
         $this->subject->setConfiguration($mockSubjectConfiguration);
 
         // set-up the processor
-        $this->subject->setUp($serial);
+        $this->subject->setUp(uniqid());
 
         // test the mapSkuToRowId() method
         $this->assertSame($rowId, $this->subject->mapSkuToRowId($sku));
