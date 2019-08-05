@@ -1,3 +1,15 @@
+# Version 15.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Move library specific DI identifiers from techdivision/import-product to this library
+* Switch to techdivision/import-product-ee 14.* and techdivision/import-product-link 15.*
+* Refactor subject implementation, extend from AbstractProductSubject instead of LinkSubject
+
 # Version 14.0.0
 
 ## Bugfixes

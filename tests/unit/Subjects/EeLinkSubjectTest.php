@@ -110,6 +110,7 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
                 RegistryKeys::ROOT_CATEGORIES => array(),
                 RegistryKeys::DEFAULT_STORE => array(),
                 RegistryKeys::CORE_CONFIG_DATA => array(),
+                RegistryKeys::ENTITY_TYPES => array(),
                 RegistryKeys::EAV_USER_DEFINED_ATTRIBUTES => array(
                     EntityTypeCodes::CATALOG_PRODUCT => array()
                 )
