@@ -1,3 +1,13 @@
+# Version 19.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to techdivision/import-product-ee 18.* and techdivision/import-product-link 19.*
+
 # Version 18.0.0
 
 ## Bugfixes
