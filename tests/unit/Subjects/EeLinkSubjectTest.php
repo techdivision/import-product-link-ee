@@ -24,6 +24,13 @@ use TechDivision\Import\Utils\CacheKeys;
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Utils\EntityTypeCodes;
 use Doctrine\Common\Collections\ArrayCollection;
+use TechDivision\Import\ExecutionContextInterface;
+use TechDivision\Import\Configuration\PluginConfigurationInterface;
+use TechDivision\Import\Configuration\SubjectConfigurationInterface;
+use TechDivision\Import\Services\RegistryProcessorInterface;
+use TechDivision\Import\Product\Services\ProductBunchProcessorInterface;
+use TechDivision\Import\Utils\Generators\GeneratorInterface;
+use League\Event\EmitterInterface;
 
 /**
  * Test class for the link subject implementation for th Magento 2 EE.
@@ -55,24 +62,24 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
     {
 
         // create a mock registry processor
-        $mockRegistryProcessor = $this->getMockBuilder('TechDivision\Import\Services\RegistryProcessorInterface')
-                                      ->setMethods(get_class_methods('TechDivision\Import\Services\RegistryProcessorInterface'))
-                                      ->getMock();
+        $mockRegistryProcessor = $this->getMockBuilder(RegistryProcessorInterface::class)
+            ->setMethods(get_class_methods(RegistryProcessorInterface::class))
+            ->getMock();
 
         // create a mock product processor
-        $mockProductProcessor = $this->getMockBuilder('TechDivision\Import\Product\Services\ProductBunchProcessorInterface')
-                                     ->setMethods(get_class_methods('TechDivision\Import\Product\Services\ProductBunchProcessorInterface'))
-                                     ->getMock();
+        $mockProductProcessor = $this->getMockBuilder(ProductBunchProcessorInterface::class)
+            ->setMethods(get_class_methods(ProductBunchProcessorInterface::class))
+            ->getMock();
 
         // create a generator
-        $mockGenerator = $this->getMockBuilder('TechDivision\Import\Utils\Generators\GeneratorInterface')
-                              ->setMethods(get_class_methods('TechDivision\Import\Utils\Generators\GeneratorInterface'))
-                              ->getMock();
+        $mockGenerator = $this->getMockBuilder(GeneratorInterface::class)
+            ->setMethods(get_class_methods(GeneratorInterface::class))
+            ->getMock();
 
         // mock the event emitter
-        $mockEmitter = $this->getMockBuilder('League\Event\EmitterInterface')
-                            ->setMethods(\get_class_methods('League\Event\EmitterInterface'))
-                            ->getMock();
+        $mockEmitter = $this->getMockBuilder(EmitterInterface::class)
+            ->setMethods(\get_class_methods(EmitterInterface::class))
+            ->getMock();
 
         // create the subject to be tested
         $this->subject = new EeLinkSubject(
@@ -120,37 +127,45 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
         // load a mock processor
         $mockProcessor = $this->subject->getRegistryProcessor();
         $mockProcessor->expects($this->any())
-                      ->method('getAttribute')
-                      ->with(CacheKeys::STATUS)
-                      ->willReturn($status);
+            ->method('getAttribute')
+            ->with(CacheKeys::STATUS)
+            ->willReturn($status);
 
-        // create a mock configuration instance
-        $mockConfiguration =  $this->getMockBuilder('TechDivision\Import\ConfigurationInterface')
-                                   ->setMethods(get_class_methods('TechDivision\Import\ConfigurationInterface'))
-                                   ->getMock();
-        $mockConfiguration->expects($this->once())
-                          ->method('getEntityTypeCode')
-                          ->willReturn(EntityTypeCodes::CATALOG_PRODUCT);
+        // mock the execution context
+        $mockExecutionContext = $this->getMockBuilder(ExecutionContextInterface::class)
+            ->setMethods(get_class_methods(ExecutionContextInterface::class))
+            ->getMock();
+        $mockExecutionContext->expects($this->any())
+            ->method('getEntityTypeCode')
+            ->willReturn(EntityTypeCodes::CATALOG_PRODUCT);
+
+        // mock the plugin configuration
+        $mockPluginConfiguration = $this->getMockBuilder(PluginConfigurationInterface::class)
+            ->setMethods(get_class_methods(PluginConfigurationInterface::class))
+            ->getMock();
+        $mockPluginConfiguration->expects($this->any())
+            ->method('getExecutionContext')
+            ->willReturn($mockExecutionContext);
 
         // create a mock subject configuration
-        $mockSubjectConfiguration = $this->getMockBuilder('TechDivision\Import\Configuration\SubjectConfigurationInterface')
-                                         ->setMethods(get_class_methods('TechDivision\Import\Configuration\SubjectConfigurationInterface'))
-                                         ->getMock();
+        $mockSubjectConfiguration = $this->getMockBuilder(SubjectConfigurationInterface::class)
+            ->setMethods(get_class_methods(SubjectConfigurationInterface::class))
+            ->getMock();
         $mockSubjectConfiguration->expects($this->any())
-                                 ->method('getConfiguration')
-                                 ->willReturn($mockConfiguration);
+            ->method('getPluginConfiguration')
+            ->willReturn($mockPluginConfiguration);
         $mockSubjectConfiguration->expects($this->any())
-                                 ->method('getCallbacks')
-                                 ->willReturn(array());
+            ->method('getCallbacks')
+            ->willReturn(array());
         $mockSubjectConfiguration->expects($this->any())
-                                 ->method('getHeaderMappings')
-                                 ->willReturn(array());
+            ->method('getHeaderMappings')
+            ->willReturn(array());
         $mockSubjectConfiguration->expects($this->any())
-                                 ->method('getImageTypes')
-                                 ->willReturn(array());
+            ->method('getImageTypes')
+            ->willReturn(array());
         $mockSubjectConfiguration->expects($this->any())
-                                 ->method('getFrontendInputCallbacks')
-                                 ->willReturn(array());
+            ->method('getFrontendInputCallbacks')
+            ->willReturn(array());
 
         // set the configuration
         $this->subject->setConfiguration($mockSubjectConfiguration);
