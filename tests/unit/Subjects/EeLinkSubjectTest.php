@@ -20,6 +20,8 @@
 
 namespace TechDivision\Import\Product\Link\Ee\Subjects;
 
+use PHPUnit\Framework\TestCase;
+use League\Event\EmitterInterface;
 use TechDivision\Import\Utils\CacheKeys;
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Utils\EntityTypeCodes;
@@ -30,7 +32,6 @@ use TechDivision\Import\Configuration\SubjectConfigurationInterface;
 use TechDivision\Import\Services\RegistryProcessorInterface;
 use TechDivision\Import\Product\Services\ProductBunchProcessorInterface;
 use TechDivision\Import\Utils\Generators\GeneratorInterface;
-use League\Event\EmitterInterface;
 
 /**
  * Test class for the link subject implementation for th Magento 2 EE.
@@ -41,7 +42,7 @@ use League\Event\EmitterInterface;
  * @link      https://github.com/techdivision/import-product-link-ee
  * @link      http://www.techdivision.com
  */
-class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
+class EeLinkSubjectTest extends TestCase
 {
 
     /**
@@ -56,7 +57,7 @@ class EeLinkSubjectTest extends \PHPUnit_Framework_TestCase
      * This method is called before a test is executed.
      *
      * @return void
-     * @see \PHPUnit_Framework_TestCase::setUp()
+     * @see \PHPUnit\Framework\TestCase::setUp()
      */
     protected function setUp()
     {
