@@ -1,3 +1,13 @@
+# Version 20.0.2
+
+## Bugfixes
+
+* Add missing observer to pre-load entity + row ID for replace operation in delta update mode
+
+## Features
+
+* None
+
 # Version 20.0.1
 
 ## Bugfixes
