@@ -1,3 +1,13 @@
+# Version 21.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to techdivision/import-product-ee 20.* and techdivision/import-product-link 20.*
+
 # Version 20.0.2
 
 ## Bugfixes
