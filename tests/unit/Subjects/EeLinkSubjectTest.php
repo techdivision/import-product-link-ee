@@ -32,6 +32,7 @@ use TechDivision\Import\Configuration\SubjectConfigurationInterface;
 use TechDivision\Import\Services\RegistryProcessorInterface;
 use TechDivision\Import\Product\Services\ProductBunchProcessorInterface;
 use TechDivision\Import\Utils\Generators\GeneratorInterface;
+use TechDivision\Import\Loaders\LoaderInterface;
 
 /**
  * Test class for the link subject implementation for th Magento 2 EE.
@@ -67,11 +68,6 @@ class EeLinkSubjectTest extends TestCase
             ->setMethods(get_class_methods(RegistryProcessorInterface::class))
             ->getMock();
 
-        // create a mock product processor
-        $mockProductProcessor = $this->getMockBuilder(ProductBunchProcessorInterface::class)
-            ->setMethods(get_class_methods(ProductBunchProcessorInterface::class))
-            ->getMock();
-
         // create a generator
         $mockGenerator = $this->getMockBuilder(GeneratorInterface::class)
             ->setMethods(get_class_methods(GeneratorInterface::class))
@@ -82,13 +78,16 @@ class EeLinkSubjectTest extends TestCase
             ->setMethods(\get_class_methods(EmitterInterface::class))
             ->getMock();
 
+        // create a mock loader instance
+        $mockLoader = $this->getMockBuilder(LoaderInterface::class)->getMock();
+
         // create the subject to be tested
         $this->subject = new EeLinkSubject(
             $mockRegistryProcessor,
             $mockGenerator,
             new ArrayCollection(),
             $mockEmitter,
-            $mockProductProcessor
+            $mockLoader
         );
     }
 
