@@ -30,7 +30,6 @@ use TechDivision\Import\ExecutionContextInterface;
 use TechDivision\Import\Configuration\PluginConfigurationInterface;
 use TechDivision\Import\Configuration\SubjectConfigurationInterface;
 use TechDivision\Import\Services\RegistryProcessorInterface;
-use TechDivision\Import\Product\Services\ProductBunchProcessorInterface;
 use TechDivision\Import\Utils\Generators\GeneratorInterface;
 use TechDivision\Import\Loaders\LoaderInterface;
 
