@@ -32,6 +32,7 @@ use TechDivision\Import\Configuration\SubjectConfigurationInterface;
 use TechDivision\Import\Services\RegistryProcessorInterface;
 use TechDivision\Import\Utils\Generators\GeneratorInterface;
 use TechDivision\Import\Loaders\LoaderInterface;
+use TechDivision\Import\Utils\Mappings\MapperInterface;
 
 /**
  * Test class for the link subject implementation for th Magento 2 EE.
@@ -80,13 +81,18 @@ class EeLinkSubjectTest extends TestCase
         // create a mock loader instance
         $mockLoader = $this->getMockBuilder(LoaderInterface::class)->getMock();
 
+        // create a mock mapper instance
+        $mockMapper = $this->getMockBuilder(MapperInterface::class)->getMock();
+        $mockMapper->method('map')->willReturn(EntityTypeCodes::CATALOG_PRODUCT);
+
         // create the subject to be tested
         $this->subject = new EeLinkSubject(
             $mockRegistryProcessor,
             $mockGenerator,
             new ArrayCollection(),
             $mockEmitter,
-            $mockLoader
+            $mockLoader,
+            $mockMapper
         );
     }
 
