@@ -2,7 +2,7 @@
 
 ## Bugfixes
 
-* Fixed #PAC-130
+* None
 
 ## Features
 
