@@ -21,7 +21,7 @@
 namespace TechDivision\Import\Product\Link\Ee\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
-use TechDivision\Import\Product\Link\Subjects\LinkSubject;
+use TechDivision\Import\Product\Ee\Subjects\EeBunchSubject;
 
 /**
  * A subject implementation that provides extended functionality for importing
@@ -33,15 +33,15 @@ use TechDivision\Import\Product\Link\Subjects\LinkSubject;
  * @link      https://github.com/techdivision/import-product-link-ee
  * @link      http://www.techdivision.com
  */
-class EeLinkSubject extends LinkSubject
+class EeLinkSubject extends EeBunchSubject
 {
 
     /**
-     * The mapping for the SKUs to the created entity IDs.
+     * The temporary persisted last link ID.
      *
-     * @var array
+     * @var integer
      */
-    protected $skuRowIdMapping = array();
+    protected $lastLinkId;
 
     /**
      * Intializes the previously loaded global data for exactly one variants.
@@ -53,36 +53,39 @@ class EeLinkSubject extends LinkSubject
     public function setUp($serial)
     {
 
+        // invoke the parent method
+        parent::setUp($serial);
+
         // load the entity manager and the registry processor
         $registryProcessor = $this->getRegistryProcessor();
 
         // load the status of the actual import process
-        $status = $registryProcessor->getAttribute($serial);
+        $status = $registryProcessor->getAttribute(RegistryKeys::STATUS);
 
-        // load the attribute set we've prepared intially
+        // load the SKU => row/entity ID mapping
         $this->skuRowIdMapping = $status[RegistryKeys::SKU_ROW_ID_MAPPING];
-
-        // prepare the callbacks
-        parent::setUp($serial);
+        $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
     }
 
     /**
-     * Return the row ID for the passed SKU.
+     * Temporary persist the last link ID.
      *
-     * @param string $sku The SKU to return the row ID for
+     * @param integer $lastLinkId The last link ID
      *
-     * @return integer The mapped row ID
-     * @throws \Exception Is thrown if the SKU is not mapped yet
+     * @return void
      */
-    public function mapSkuToRowId($sku)
+    public function setLastLinkId($lastLinkId)
     {
+        $this->lastLinkId = $lastLinkId;
+    }
 
-        // query weather or not the SKU has been mapped
-        if (isset($this->skuRowIdMapping[$sku])) {
-            return $this->skuRowIdMapping[$sku];
-        }
-
-        // throw an exception if the SKU has not been mapped yet
-        throw new \Exception(sprintf('Found not mapped SKU %s', $sku));
+    /**
+     * Load the temporary persisted the last link ID.
+     *
+     * @return integer The last link ID
+     */
+    public function getLastLinkId()
+    {
+        return $this->lastLinkId;
     }
 }
