@@ -12,6 +12,9 @@
             <argument type="service" id="import_product_ee.processor.product.bunch"/>
             <argument type="string">%import_product_link.param.sku.column.name%</argument>
         </service>
+        <service id="import_product_link_ee.observer.clean.up.product.link" class="TechDivision\Import\Product\Link\Ee\Observers\EeCleanUpLinkObserver">
+            <argument type="service" id="import_product_link.processor.product.link"/>
+        </service>
 
         <!--
          | The DI configuration for the composite observers of the replace operation.
