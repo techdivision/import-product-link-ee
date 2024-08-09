@@ -1,3 +1,9 @@
+# Version 28.0.1
+
+## Bugfixes
+
+*  fix php warnings
+
 # Version 28.0.0
 
 ## Features
@@ -7,6 +13,12 @@
 * Update dependencies
 * Add PHP ">=8.1" support
 * Remove PHP 7.3 support
+
+# Version 27.0.1
+
+## Bugfixes
+
+*  fix php warnings
 
 # Version 27.0.0
 
